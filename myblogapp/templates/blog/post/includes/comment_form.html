@@ -1,0 +1,8 @@
+<h2>Adicione um novo comentario</h2>
+
+<form action="{%url "blog:post_comment" post.id%}" class="comment-form" method="post">
+    {{ form.as_p | safe}}
+
+    {% csrf_token %}
+    <p><input type="submit" value="adicionar comentario"></p>
+</form>

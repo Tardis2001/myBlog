@@ -1,0 +1,33 @@
+<ul class="pagination">
+    {% if page.has_previous %}
+        <li>
+            <a class="previouscontainer" href="?page={{ page.previous_page_number }}">
+                Anterior
+            </a>
+        </li>
+    {% endif %}
+    
+    {% comment %} <li class="current"> {% endcomment %}
+        {% comment %} Page {{ page.number }} of {{ page.paginator.num_pages }}. {% endcomment %}
+    {% comment %} </li> {% endcomment %}
+ 
+    {% for pagenumber in page.paginator.page_range %}
+        <li>
+            <a href="?page={{ pagenumber }}" class="{% if pagenumber == page.number %}active{% endif %}">
+                {{ pagenumber }}
+            </a>
+        </li>
+    {% endfor %}
+
+    {% if page.has_next %}
+        <li>
+            <a class="nextcontainer" href="?page={{ page.next_page_number }}">
+                Proximo
+            </a>
+        </li>
+    {% endif %}
+
+</ul>
+<div class="paginationtext">
+    Pagina {{ page.number }} de {{ page.paginator.num_pages }}
+</div>

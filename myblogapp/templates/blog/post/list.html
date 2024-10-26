@@ -1,0 +1,36 @@
+{% extends "blog/base.html" %} 
+{% load blog_tags %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+{% block content %}
+<div class="postlist">
+    <div class="postHeader">
+        <h1>Matheus Evangelista</h1>
+        <p>🇧🇷 • <small>Desenvolvedor  </small> </p>
+        <h3>Areas de interesse</h3>
+        <small class="interesse">dev web, mobile, python, java</small>
+    </div>
+        <div class="posts">
+        <h1><a class="listPostsHeader" href="/">Meus posts</a></h1>
+        
+        {% for post in posts %}
+        <a href="{{ post.get_absolute_url }}">
+                    
+            <div class="post">
+                    <p class="post-title"> {{ post.title }} </p>
+
+                        <p class="date">Publicado {{ post.publish }}</p>
+                    <img class="postFigure" src="{{ post.thumbnail.url }}" alt="Imagem do post"/>
+                    {% comment %} {{ post.body |markdown| truncatewords_html:10 }} {% endcomment %}
+                    
+            </div>
+        </a>
+            
+        {% endfor %}
+        </div>
+ 
+    {% include "blog/post/includes/pagination.html" with page=posts %}
+    </div>
+      {% comment %} <button class="scrollToTopBtn">☝️</button> {% endcomment %}
+{% endblock content %}

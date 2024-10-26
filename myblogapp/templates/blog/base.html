@@ -1,0 +1,122 @@
+{% load blog_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <title>{% block title %} {% endblock title %}</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="Matheus Santos Evangelista">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="HTML, CSS, JavaScript, Django, Blog">
+    <meta name="description" content="Meu blog pessoal">
+  <link href="{% static "css/blog.css" %}" type='text/css' rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    {% block extra_css %}
+      {{ form.media.css }}
+    {% endblock %}
+  </head>
+  <body>
+    <div class="navigation">
+      <input type="checkbox" class="navigation__checkbox" id="nav-toggle">
+      <label for="nav-toggle" class="navigation__button">
+        <span class="navigation__icon" aria-label="toggle navigation menu"></span>
+      </label>
+      <div class="navigation__background"></div>
+
+      <nav class="navigation__nav" role="navigation">
+        <ul class="navigation__list">
+          <li class="navigation__item">
+            <a href="http://www.localhost:8000/" class="navigation__link"><span>01</span>Lista Posts</a>
+          </li>
+          <li class="navigation__item">
+            <a href="https://www.matheusevangelista.vercel.app/sobre" class="navigation__link"><span>02</span>Sobre</a>
+          </li>
+          <li class="navigation__item">
+            <a href="https://matheusevangelista.vercel.app/projetos" class="navigation__link"><span>03</span>Projetos</a>
+          </li>
+          <li class="navigation__item">
+            <a href="https://matheusevangelista.vercel.app/contatos" class="navigation__link"><span>04</span>Contatos</a>
+          </li>
+          </li>
+    </ul>
+  </nav>
+</div>
+<div class="main">
+    <div id="content">{% block content %} {% endblock content %}</div>
+    
+  
+    <div id="sidebar">
+      <h2 class="sidebar-title" >Meu Blog</h2>
+      <p class="sidebar-about"> Esse é o meu blog pessoal seja bem vindo! Eu escrevi um total de <span class="numposts">{% total_posts %}</span> posts até agora</p>
+     
+    <div class="form-feed-wrapper">
+      <form name="search" id="searchform" action="{% url 'blog:post_search' %}" method="get" class="form-wrapper">
+        <input type="text" id="query" name="query" placeholder="Pesquisar por..." required>
+    
+          <button class="submitsearch" type="submit" form="searchform" value="Submit">Pots</button>
+     
+      </form>
+
+
+            <a href="{% url "blog:post_feed" %}">
+            <div class="css-art css-art-rss">
+              <div class="css-art-rss-inner-1">
+                <div class="css-art-rss-inner-2">
+                  <div class="hide-text">RSS Feed</div>
+                </div>
+              </div>
+            </div>
+          </a>
+  </div>
+      <div class="sidebar-lastposts">
+        <h3 class="sidebar-lastpostsHeader">Ultimos posts</h3>
+        <div class="sidebar-list-lastposts">
+          {% comment %} {% show_latest_posts 3 %} {% endcomment %}
+          {% show_latest_posts 5 as latest_posts %}
+{% for post in latest_posts %}
+<a class="links" href="{{post.get_absolute_url}}">
+    {{ post.title|truncatewords:5}}
+</a>
+<br>
+ {% endfor %}
+
+        </div>
+      </div>
+      <div class="sidebar-lastcommentscontainer">
+        <h3 class="sidebar-lastcomments">Posts mais comentados</h3>
+        {% get_most_commented_posts as most_commented_posts %}
+        
+          {% for post in most_commented_posts %}
+            <a class="links" href="{{ post.get_absolute_url }}">{{ post.title | truncatewords:5}}</a>
+            <br>
+          {% endfor %}
+        </ul>
+    </div>
+    <div class="sidebar-tagscontainer">
+      <h3>Todas as Tags</h3>
+  
+        {% get_all_tags as all_tags %}
+        {% for tag in all_tags %}
+        <a class="links" href="{% url "blog:post_list_by_tag" tag.slug %}">
+            {{ tag.name}} 
+        </a>
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </ul>
+    
+    </div>
+    <script src="{% static 'js/blog.js' %}"></script>
+
+    </div> 
+  
+    <button id="backToTopBtn" onclick="scrollToTop()">Back to Top</button>
+   
+  </div>
+  </div>
+  {% block extra_js %}
+  {{ form.media.js }}
+{% endblock %}
+  </body>
+</html>
